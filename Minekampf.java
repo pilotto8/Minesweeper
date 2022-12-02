@@ -15,7 +15,7 @@ public class Minekampf{
 	
 	public static final int ROW = 10;
 	public static final int COL = 20;
-	public static final int BOMB = 2;
+	public static final int BOMB = 35;
 	private static int [][] camp = new int [COL][ROW];
 	//000:data 00000:number
 	//visible, flag, bomb, numbers...
