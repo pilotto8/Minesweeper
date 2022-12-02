@@ -15,13 +15,15 @@ public class Minekampf{
 	
 	public static final int ROW = 10;
 	public static final int COL = 20;
-	public static final int BOMB = 40;
-	public static int [][] camp = new int [COL][ROW];
+	public static final int BOMB = 2;
+	private static int [][] camp = new int [COL][ROW];
 	//000:data 00000:number
 	//visible, flag, bomb, numbers...
 	public static int gameMode = 1;
 	public static int[] pointer = new int[3];
-	public static Scanner input = new Scanner(System.in);
+	private static Scanner input = new Scanner(System.in);
+	public static int numbers = 0;
+	public static int flags = 0;
 	
 	
 	public static void main (String[] args){
@@ -51,7 +53,7 @@ public class Minekampf{
 			do{
 				pos = rand.nextInt(ROW * COL);
 			}
-			while((camp[pos % COL][pos / COL] >> 5 == 1) || !((Math.abs((pos % COL) - x) > 2) || (Math.abs((pos / COL) - y) > 2)));
+			while((camp[pos % COL][pos / COL] >> 5 == 1) || !((Math.abs((pos % COL) - x) > 1) || (Math.abs((pos / COL) - y) > 1)));
 			camp[pos % COL][pos / COL] = 1;
 			camp[pos % COL][pos / COL] <<= 5;
 			neightbourOperator(pos % COL, pos / COL, 0);
@@ -72,6 +74,9 @@ public class Minekampf{
 			case 0:{
 				for (int a = 0; a < area; a++){
 					if (camp[startX + (a % b)][startY + (a / b)] >> 5 != 1){
+						if (camp[startX + (a % b)][startY + (a / b)] % 16 == 0){
+							numbers++;
+						}
 						camp[startX + (a % b)][startY + (a / b)]++;
 					}
 				}	
@@ -85,6 +90,9 @@ public class Minekampf{
 						camp[startX + (a % b)][startY + (a / b)] |= 1 << 7;
 						if (camp[startX + (a % b)][startY + (a / b)] % 16 == 0){
 							neightbourOperator(startX + (a % b), startY + (a / b), 1);
+						}
+						else {
+							numbers--;
 						}
 					}
 				}	
@@ -158,6 +166,7 @@ public class Minekampf{
 	public static void checkBox(int x, int y, int flag){
 		if (flag == 1){
 			camp[x][y] ^= 1 << 6;
+			flags++;
 		}
 		else {
 			camp[x][y] |= 1 << 7;
@@ -167,6 +176,12 @@ public class Minekampf{
 			else if (camp[x][y] % 16 == 0){
 				neightbourOperator(x, y, 1);
 			}
+			else{
+				numbers--;
+			}
+		}
+		if (numbers == 0 && flags == BOMB){
+			gameMode = 2;
 		}
 	}
 	
