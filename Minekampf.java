@@ -293,14 +293,13 @@ public class Minekampf{
 				gameMode = 0;
 			}
 			else if (camp[x][y] % 16 == 0){
-				boxes--;
 				neightbourOperator(x, y, 1);
 			}
 			/*else{
 				numbers--;
 			}*/
 		}
-		if (boxes <= BOMB + 2 && flags == BOMB){
+		if (boxes == BOMB && flags == BOMB){
 			gameMode = 2;
 		}
 	}
